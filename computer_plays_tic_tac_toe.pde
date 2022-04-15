@@ -3,6 +3,7 @@ void setup(){
   size(1280,720);//set the winow size
 }
 int[] board=new int[9];
+int mode=1;
 
 void draw(){
   background(#D8D8D8);//set the background color
@@ -63,4 +64,85 @@ void draw(){
   }else if(board[8]==-1){
     text("O",rightCol,bottomRow);
   }
+}
+
+void mouseClicked(){
+  if(mouseX>width*0.25&&mouseX<width*0.75&&mouseY>height*0.1&&mouseY<height*0.9){
+    float widthseperator =0.1,heightseperator=0.15;
+    if(mouseX<width/2-width*widthseperator&&mouseY<height/2-height*heightseperator){
+      if(board[0]!=0)
+      return;
+     board[0]=1;
+     makeguess();
+    }
+    if(mouseX>width/2-width*widthseperator&&mouseY<height/2-height*heightseperator&&mouseX<width/2+width*widthseperator){
+      if(board[1]!=0)
+      return;
+     board[1]=1;
+     makeguess();
+    }
+    if(mouseX>width/2+width*widthseperator&&mouseY<height/2-height*heightseperator){
+      if(board[2]!=0)
+      return;
+     board[2]=1;
+     makeguess();
+    }
+    if(mouseX<width/2-width*widthseperator&&mouseY>height/2-height*heightseperator&&mouseY<height/2+height*heightseperator){
+      if(board[3]!=0)
+      return;
+     board[3]=1;
+     makeguess();
+    }
+    if(mouseX>width/2-width*widthseperator&&mouseY>height/2-height*heightseperator&&mouseY<height/2+height*heightseperator&&mouseX<width/2+width*widthseperator){
+      if(board[4]!=0)
+      return;
+     board[4]=1;
+     makeguess();
+    }
+    if(mouseX>width/2+width*widthseperator&&mouseY>height/2-height*heightseperator&&mouseY<height/2+height*heightseperator){
+      if(board[5]!=0)
+      return;
+     board[5]=1;
+     makeguess();
+    }
+    if(mouseX<width/2-width*widthseperator&&mouseY>height/2+height*heightseperator){
+      if(board[6]!=0)
+      return;
+     board[6]=1;
+     makeguess();
+    }
+    if(mouseX>width/2-width*widthseperator&&mouseY>height/2+height*heightseperator&&mouseX<width/2+width*widthseperator){
+      if(board[7]!=0)
+      return;
+     board[7]=1;
+     makeguess();
+    }
+    if(mouseX>width/2+width*widthseperator&&mouseY>height/2+height*heightseperator){
+      if(board[8]!=0)
+      return;
+     board[8]=1;
+     makeguess();
+    }
+  }
+}
+
+void makeguess(){
+  if(boardfull())
+  return;
+  if(mode==1){
+    boolean notplaced=true;
+    while(notplaced){
+     int slot=(int)(Math.random()*1000000%9);
+     if(board[slot]!=0){
+      continue; 
+     }
+     board[slot]=-1;
+     notplaced=false;
+    }
+  }//end of mode 1
+}
+
+boolean boardfull(){
+ 
+  return board[0]!=0&&board[1]!=0&&board[2]!=0&&board[3]!=0&&board[4]!=0&&board[5]!=0&&board[6]!=0&&board[7]!=0&&board[8]!=0;
 }
