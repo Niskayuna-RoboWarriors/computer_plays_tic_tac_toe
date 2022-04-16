@@ -2,10 +2,12 @@
 void setup(){
   size(1280,720);//set the winow size
   reset=new Button(5,60,80,20,"reset");
+  botFirst=new Button(5,90,80,20,"bot first: false");
 }
 int[] board=new int[9];
 int mode=2,wunNum=-1;
-Button reset;
+Button reset,botFirst;
+boolean botGoesFirst=false;
 
 void draw(){
   background(#D8D8D8);//set the background color
@@ -76,6 +78,7 @@ void draw(){
     rect(0,0,50,50);
   }
   reset.draw();
+  botFirst.draw();
 }
 
 void mouseClicked(){
@@ -136,13 +139,27 @@ void mouseClicked(){
      makeguess();
     }
   }
-  if(reset.isMouseOver()){
+  if(reset.isMouseOver()){//reset button
     board=new int[9];
+    if(botGoesFirst){
+     makeguess(); 
+    }
+  }
+  if(botFirst.isMouseOver()){//bot goers first button
+    if(botGoesFirst){
+      botGoesFirst=false;
+      botFirst.setText("bot first: false");
+    }else{
+      botGoesFirst=true;
+      botFirst.setText("bot first: true");
+    }
   }
 }
 
 void makeguess(){
   if(boardfull())
+  return;
+  if(detectWin())
   return;
   if(mode==1){
     boolean notplaced=true;
