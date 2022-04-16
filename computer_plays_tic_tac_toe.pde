@@ -1,9 +1,11 @@
 //yes I am aware that arduenos are programed in c and that this is being written in processing/java
 void setup(){
   size(1280,720);//set the winow size
+  reset=new Button(5,60,80,20,"reset");
 }
 int[] board=new int[9];
 int mode=2,wunNum=-1;
+Button reset;
 
 void draw(){
   background(#D8D8D8);//set the background color
@@ -69,6 +71,11 @@ void draw(){
     fill(0,255,0);
     rect(0,0,50,50);
   }
+  if(boardfull()&&!detectWin()){
+    fill(255,255,0);
+    rect(0,0,50,50);
+  }
+  reset.draw();
 }
 
 void mouseClicked(){
@@ -129,6 +136,9 @@ void mouseClicked(){
      makeguess();
     }
   }
+  if(reset.isMouseOver()){
+    board=new int[9];
+  }
 }
 
 void makeguess(){
@@ -145,16 +155,29 @@ void makeguess(){
      notplaced=false;
     }
   }//end of mode 1
+  boolean tmpfalse=false;
   if(mode==2){//boss mode
     int placeattempot=towInaRow();
     if(placeattempot!=-1){//if the player has 2 in a row and can win then win
       board[placeattempot]=-1;
     }else if(block()!=-1){//Block: If the opponent has two in a row, the player must play the third themselves to block the opponent. 
       board[block()]=-1;
+    }else if(tmpfalse){//Fork: Cause a scenario where the player has two ways to win (two non-blocked lines of 2).
+
+    }else if(tmpfalse){//Blocking an opponent's fork: If there is only one possible fork for the opponent, the player should block it. Otherwise, the player should block all forks in any way that simultaneously allows them to make two in a row. Otherwise, the player should make a two in a row to force the opponent into defending, as long as it does not result in them producing a fork. For example, if "X" has two opposite corners and "O" has the center, "O" must not play a corner move to win. (Playing a corner move in this scenario produces a fork for "X" to win.)
+
+    }else if(tmpfalse){//Center: A player marks the center. 
+
+    }else if(tmpfalse){//Opposite corner: If the opponent is in the corner, the player plays the opposite corner.
+
+    }else if(tmpfalse){//Empty corner: The player plays in a corner square.
+
+    }else if(tmpfalse){//Empty side: The player plays in a middle square on any of the four sides.
+
     }else{
-      mode=1;
-      makeguess();
-      mode=2;
+     mode=1;
+     makeguess();
+     mode=2;
     }
   }
 }
