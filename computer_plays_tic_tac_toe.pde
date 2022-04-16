@@ -157,23 +157,22 @@ void makeguess(){
   }//end of mode 1
   boolean tmpfalse=false;
   if(mode==2){//boss mode
-    int placeattempot=towInaRow();
-    if(placeattempot!=-1){//if the player has 2 in a row and can win then win
-      board[placeattempot]=-1;
+    if(towInaRow()!=-1){//if the player has 2 in a row and can win then win
+      board[towInaRow()]=-1;
     }else if(block()!=-1){//Block: If the opponent has two in a row, the player must play the third themselves to block the opponent. 
       board[block()]=-1;
     }else if(tmpfalse){//Fork: Cause a scenario where the player has two ways to win (two non-blocked lines of 2).
-
+    
     }else if(tmpfalse){//Blocking an opponent's fork: If there is only one possible fork for the opponent, the player should block it. Otherwise, the player should block all forks in any way that simultaneously allows them to make two in a row. Otherwise, the player should make a two in a row to force the opponent into defending, as long as it does not result in them producing a fork. For example, if "X" has two opposite corners and "O" has the center, "O" must not play a corner move to win. (Playing a corner move in this scenario produces a fork for "X" to win.)
 
-    }else if(tmpfalse){//Center: A player marks the center. 
-
-    }else if(tmpfalse){//Opposite corner: If the opponent is in the corner, the player plays the opposite corner.
-
-    }else if(tmpfalse){//Empty corner: The player plays in a corner square.
-
-    }else if(tmpfalse){//Empty side: The player plays in a middle square on any of the four sides.
-
+    }else if(board[4]==0){//Center: A player marks the center. 
+      board[4]=-1;
+    }else if(opposetCorner()!=-1){//Opposite corner: If the opponent is in the corner, the player plays the opposite corner.
+      board[opposetCorner()]=-1;
+    }else if(emptyCorner()!=-1){//Empty corner: The player plays in a corner square.
+      board[emptyCorner()]=-1;
+    }else if(emptySide()!=-1){//Empty side: The player plays in a middle square on any of the four sides.
+      board[emptySide()]=-1;
     }else{
      mode=1;
      makeguess();
@@ -399,6 +398,54 @@ int block(){
   }
   if(board[2]==0&&board[4]==1&&board[6]==1){//- O O
     return 2;
+  }
+  return -1;
+}
+
+int opposetCorner(){
+  if(board[0]==1&&board[8]==0){
+    return 8;
+  }
+  if(board[2]==1&&board[6]==0){
+    return 6;
+  }
+  if(board[8]==1&&board[0]==0){
+    return 0;
+  }
+  if(board[6]==1&&board[2]==0){
+    return 2;
+  }
+  return -1;
+}
+
+int emptyCorner(){
+ if(board[0]==0){
+   return 0;
+ }
+ if(board[2]==0){
+   return 2;
+ }
+ if(board[6]==0){
+   return 6;
+ }
+ if(board[8]==0){
+   return 8;
+ }
+  return -1;
+}
+
+int emptySide(){
+  if(board[1]==0){
+   return 1; 
+  }
+  if(board[3]==0){
+   return 3; 
+  }
+  if(board[5]==0){
+   return 5; 
+  }
+  if(board[7]==0){
+   return 7; 
   }
   return -1;
 }
