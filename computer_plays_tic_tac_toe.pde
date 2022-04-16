@@ -1,12 +1,13 @@
 //yes I am aware that arduenos are programed in c and that this is being written in processing/java
 void setup(){
   size(1280,720);//set the winow size
-  reset=new Button(5,60,80,20,"reset");
-  botFirst=new Button(5,90,80,20,"bot first: false");
+  reset=new Button(5,height*0.05,width*0.06,height*0.03,"reset");
+  botFirst=new Button(5,height*0.1,width*0.06,height*0.03,"bot first: false");
+  difficultyButton=new Button(5,height*0.15,width*0.06,height*0.03,"difficulty: 0");
 }
 int[] board=new int[9];
-int mode=2,wunNum=-1;
-Button reset,botFirst;
+int difficulty=0,wunNum=-1;
+Button reset,botFirst,difficultyButton;
 boolean botGoesFirst=false;
 
 void draw(){
@@ -79,6 +80,7 @@ void draw(){
   }
   reset.draw();
   botFirst.draw();
+  difficultyButton.draw();
 }
 
 void mouseClicked(){
@@ -88,61 +90,61 @@ void mouseClicked(){
       if(board[0]!=0)
       return;
      board[0]=1;
-     makeguess();
+     botGo();
     }
     if(mouseX>width/2-width*widthseperator&&mouseY<height/2-height*heightseperator&&mouseX<width/2+width*widthseperator){
       if(board[1]!=0)
       return;
      board[1]=1;
-     makeguess();
+     botGo();
     }
     if(mouseX>width/2+width*widthseperator&&mouseY<height/2-height*heightseperator){
       if(board[2]!=0)
       return;
      board[2]=1;
-     makeguess();
+     botGo();
     }
     if(mouseX<width/2-width*widthseperator&&mouseY>height/2-height*heightseperator&&mouseY<height/2+height*heightseperator){
       if(board[3]!=0)
       return;
      board[3]=1;
-     makeguess();
+     botGo();
     }
     if(mouseX>width/2-width*widthseperator&&mouseY>height/2-height*heightseperator&&mouseY<height/2+height*heightseperator&&mouseX<width/2+width*widthseperator){
       if(board[4]!=0)
       return;
      board[4]=1;
-     makeguess();
+     botGo();
     }
     if(mouseX>width/2+width*widthseperator&&mouseY>height/2-height*heightseperator&&mouseY<height/2+height*heightseperator){
       if(board[5]!=0)
       return;
      board[5]=1;
-     makeguess();
+     botGo();
     }
     if(mouseX<width/2-width*widthseperator&&mouseY>height/2+height*heightseperator){
       if(board[6]!=0)
       return;
      board[6]=1;
-     makeguess();
+     botGo();
     }
     if(mouseX>width/2-width*widthseperator&&mouseY>height/2+height*heightseperator&&mouseX<width/2+width*widthseperator){
       if(board[7]!=0)
       return;
      board[7]=1;
-     makeguess();
+     botGo();
     }
     if(mouseX>width/2+width*widthseperator&&mouseY>height/2+height*heightseperator){
       if(board[8]!=0)
       return;
      board[8]=1;
-     makeguess();
+     botGo();
     }
   }
   if(reset.isMouseOver()){//reset button
     board=new int[9];
     if(botGoesFirst){
-     makeguess(); 
+     botGo(); 
     }
   }
   if(botFirst.isMouseOver()){//bot goers first button
@@ -154,9 +156,15 @@ void mouseClicked(){
       botFirst.setText("bot first: true");
     }
   }
+  if(difficultyButton.isMouseOver()){//difficulty button
+   difficulty++;
+   if(difficulty>4)
+     difficulty=0;
+   difficultyButton.setText("difficulty: "+difficulty);
+  }
 }
 
-void makeguess(){
+void makeguess(int mode){
   if(boardfull())
   return;
   if(detectWin())
@@ -179,7 +187,7 @@ void makeguess(){
     }else if(block()!=-1){//Block: If the opponent has two in a row, the player must play the third themselves to block the opponent. 
       board[block()]=-1;
     }else if(tmpfalse){//Fork: Cause a scenario where the player has two ways to win (two non-blocked lines of 2).
-    
+    //I dont know if i can be botherd to figure this one out
     }else if(tmpfalse){//Blocking an opponent's fork: If there is only one possible fork for the opponent, the player should block it. Otherwise, the player should block all forks in any way that simultaneously allows them to make two in a row. Otherwise, the player should make a two in a row to force the opponent into defending, as long as it does not result in them producing a fork. For example, if "X" has two opposite corners and "O" has the center, "O" must not play a corner move to win. (Playing a corner move in this scenario produces a fork for "X" to win.)
 
     }else if(board[4]==0){//Center: A player marks the center. 
@@ -191,10 +199,39 @@ void makeguess(){
     }else if(emptySide()!=-1){//Empty side: The player plays in a middle square on any of the four sides.
       board[emptySide()]=-1;
     }else{
-     mode=1;
-     makeguess();
-     mode=2;
+     makeguess(1);
     }
+  }
+}
+
+void botGo(){
+  double randMode = Math.random()*100000%100;
+  if(difficulty==0){
+   makeguess(1); 
+  }
+  if(difficulty==1){
+    if(randMode>75){
+      makeguess(2); 
+    }else{
+      makeguess(1); 
+    }
+  }
+  if(difficulty==2){
+    if(randMode>50){
+      makeguess(2); 
+    }else{
+      makeguess(1); 
+    }
+  }
+  if(difficulty==3){
+    if(randMode>25){
+      makeguess(2); 
+    }else{
+      makeguess(1); 
+    }
+  }
+  if(difficulty==4){
+    makeguess(2); 
   }
 }
 
