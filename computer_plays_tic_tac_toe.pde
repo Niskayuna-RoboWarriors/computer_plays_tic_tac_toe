@@ -3,7 +3,7 @@ void setup(){
   size(1280,720);//set the winow size
 }
 int[] board=new int[9];
-int mode=1,wunNum=-1;
+int mode=2,wunNum=-1;
 
 void draw(){
   background(#D8D8D8);//set the background color
@@ -145,8 +145,17 @@ void makeguess(){
      notplaced=false;
     }
   }//end of mode 1
-  if(mode==2){
-    
+  if(mode==2){//boss mode
+    int placeattempot=towInaRow();
+    if(placeattempot!=-1){//if the player has 2 in a row and can win then win
+      board[placeattempot]=-1;
+    }else if(block()!=-1){//Block: If the opponent has two in a row, the player must play the third themselves to block the opponent. 
+      board[block()]=-1;
+    }else{
+      mode=1;
+      makeguess();
+      mode=2;
+    }
   }
 }
 
@@ -192,4 +201,181 @@ boolean detectWin(){
     }
   }
   return false;
+}
+
+int towInaRow(){
+  //horozontal wins
+  //top row wins
+  if(board[0]==-1&&board[1]==-1&&board[2]==0){//O O -
+    return 2;
+  }
+  if(board[0]==-1&&board[1]==0&&board[2]==-1){//O - O
+    return 1;
+  }
+  if(board[0]==0&&board[1]==-1&&board[2]==-1){//- O O
+    return 0;
+  }
+  //moddle row wins
+  if(board[3]==-1&&board[4]==-1&&board[5]==0){//O O -
+    return 5;
+  }
+  if(board[3]==-1&&board[4]==0&&board[5]==-1){//O - O
+    return 4;
+  }
+  if(board[3]==0&&board[4]==-1&&board[5]==-1){//- O O
+    return 3;
+  }
+  //bottom row wins
+  if(board[0]==-1&&board[1]==-1&&board[2]==0){//O O -
+    return 2;
+  }
+  if(board[0]==-1&&board[1]==0&&board[2]==-1){//O - O
+    return 1;
+  }
+  if(board[0]==0&&board[1]==-1&&board[2]==-1){//- O O
+    return 0;
+  }
+  
+  //verticle wins
+  //left colom wins
+  if(board[0]==-1&&board[3]==-1&&board[6]==0){//O O -
+    return 6;
+  }
+  if(board[0]==-1&&board[3]==0&&board[6]==-1){//O - O
+    return 3;
+  }
+  if(board[0]==0&&board[3]==-1&&board[6]==-1){//- O O
+    return 0;
+  }
+  //center colom wins
+  if(board[1]==-1&&board[4]==-1&&board[7]==0){//O O -
+    return 7;
+  }
+  if(board[1]==-1&&board[4]==0&&board[7]==-1){//O - O
+    return 4;
+  }
+  if(board[1]==0&&board[4]==-1&&board[7]==-1){//- O O
+    return 1;
+  }
+  //right colom wins
+  if(board[2]==-1&&board[5]==-1&&board[8]==0){//O O -
+    return 8;
+  }
+  if(board[2]==-1&&board[5]==0&&board[8]==-1){//O - O
+    return 5;
+  }
+  if(board[2]==0&&board[5]==-1&&board[8]==-1){//- O O
+    return 2;
+  }
+  
+  //diagonal wins
+  //diagonal 1
+  if(board[0]==-1&&board[4]==-1&&board[8]==0){//O O -
+    return 8;
+  }
+  if(board[0]==-1&&board[4]==0&&board[8]==-1){//O - O
+    return 4;
+  }
+  if(board[0]==0&&board[4]==-1&&board[8]==-1){//- O O
+    return 0;
+  }
+  //diagonal 2
+  if(board[2]==-1&&board[4]==-1&&board[6]==0){//O O -
+    return 6;
+  }
+  if(board[2]==-1&&board[4]==0&&board[6]==-1){//O - O
+    return 4;
+  }
+  if(board[2]==0&&board[4]==-1&&board[6]==-1){//- O O
+    return 2;
+  }
+  return -1;
+}
+
+
+int block(){
+  if(board[0]==1&&board[1]==1&&board[2]==0){//O O -
+    return 2;
+  }
+  if(board[0]==1&&board[1]==0&&board[2]==1){//O - O
+    return 1;
+  }
+  if(board[0]==0&&board[1]==1&&board[2]==1){//- O O
+    return 0;
+  }
+  //moddle row blocks
+  if(board[3]==1&&board[4]==1&&board[5]==0){//O O -
+    return 5;
+  }
+  if(board[3]==1&&board[4]==0&&board[5]==1){//O - O
+    return 4;
+  }
+  if(board[3]==0&&board[4]==1&&board[5]==1){//- O O
+    return 3;
+  }
+  //bottom row blocks
+  if(board[0]==1&&board[1]==1&&board[2]==0){//O O -
+    return 2;
+  }
+  if(board[0]==1&&board[1]==0&&board[2]==1){//O - O
+    return 1;
+  }
+  if(board[0]==0&&board[1]==1&&board[2]==1){//- O O
+    return 0;
+  }
+  
+  //verticle blocks
+  //left colom blocks
+  if(board[0]==1&&board[3]==1&&board[6]==0){//O O -
+    return 6;
+  }
+  if(board[0]==1&&board[3]==0&&board[6]==1){//O - O
+    return 3;
+  }
+  if(board[0]==0&&board[3]==1&&board[6]==1){//- O O
+    return 0;
+  }
+  //center colom blocks
+  if(board[1]==1&&board[4]==1&&board[7]==0){//O O -
+    return 7;
+  }
+  if(board[1]==1&&board[4]==0&&board[7]==1){//O - O
+    return 4;
+  }
+  if(board[1]==0&&board[4]==1&&board[7]==1){//- O O
+    return 1;
+  }
+  //right colom blocks
+  if(board[2]==1&&board[5]==1&&board[8]==0){//O O -
+    return 8;
+  }
+  if(board[2]==1&&board[5]==0&&board[8]==1){//O - O
+    return 5;
+  }
+  if(board[2]==0&&board[5]==1&&board[8]==1){//- O O
+    return 2;
+  }
+  
+  //diagonal blocks
+  //diagonal 1
+  if(board[0]==1&&board[4]==1&&board[8]==0){//O O -
+    return 8;
+  }
+  if(board[0]==1&&board[4]==0&&board[8]==1){//O - O
+    return 4;
+  }
+  if(board[0]==0&&board[4]==1&&board[8]==1){//- O O
+    return 0;
+  }
+  //diagonal 2
+  if(board[2]==1&&board[4]==1&&board[6]==0){//O O -
+    return 6;
+  }
+  if(board[2]==1&&board[4]==0&&board[6]==1){//O - O
+    return 4;
+  }
+  if(board[2]==0&&board[4]==1&&board[6]==1){//- O O
+    return 2;
+  }
+  return -1;
 }
