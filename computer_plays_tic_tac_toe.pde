@@ -3,7 +3,7 @@ void setup(){
   size(1280,720);//set the winow size
 }
 int[] board=new int[9];
-int mode=1;
+int mode=1,wunNum=-1;
 
 void draw(){
   background(#D8D8D8);//set the background color
@@ -63,6 +63,11 @@ void draw(){
     text("X",rightCol,bottomRow);
   }else if(board[8]==-1){
     text("O",rightCol,bottomRow);
+  }
+  
+  if(detectWin()){
+    fill(0,255,0);
+    rect(0,0,50,50);
   }
 }
 
@@ -131,18 +136,60 @@ void makeguess(){
   return;
   if(mode==1){
     boolean notplaced=true;
-    while(notplaced){
-     int slot=(int)(Math.random()*1000000%9);
-     if(board[slot]!=0){
+    while(notplaced){//while it has not placed
+     int slot=(int)(Math.random()*1000000%9);//choose a random tile
+     if(board[slot]!=0){//check if that tile has something allready
       continue; 
      }
-     board[slot]=-1;
+     board[slot]=-1;//if not set that tile to O
      notplaced=false;
     }
   }//end of mode 1
+  if(mode==2){
+    
+  }
 }
 
 boolean boardfull(){
- 
   return board[0]!=0&&board[1]!=0&&board[2]!=0&&board[3]!=0&&board[4]!=0&&board[5]!=0&&board[6]!=0&&board[7]!=0&&board[8]!=0;
+}
+
+boolean detectWin(){
+  for(int i=-1;i<2;i+=2){//check for both O and X
+    if(board[0]==i&&board[1]==i&&board[2]==i){//top row
+    wunNum=1;
+      return true;
+    }
+    if(board[3]==i&&board[4]==i&&board[5]==i){//middle row
+    wunNum=2;
+      return true;
+    }
+    if(board[6]==i&&board[7]==i&&board[8]==i){//bottom row
+    wunNum=3;
+      return true;
+    }
+    
+    if(board[0]==i&&board[3]==i&&board[6]==i){//left colom
+    wunNum=4;
+      return true;
+    }
+    if(board[1]==i&&board[4]==i&&board[7]==i){//middle colom
+    wunNum=5;
+      return true;
+    }
+    if(board[2]==i&&board[5]==i&&board[8]==i){//right colom
+    wunNum=6;
+      return true;
+    }
+    
+    if(board[0]==i&&board[4]==i&&board[8]==i){//diagonal 1
+    wunNum=7;
+      return true;
+    }
+    if(board[2]==i&&board[4]==i&&board[6]==i){//diagonal 2
+    wunNum=8;
+      return true;
+    }
+  }
+  return false;
 }
