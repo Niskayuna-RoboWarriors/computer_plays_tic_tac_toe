@@ -199,38 +199,38 @@ void makeguess(int mode){
     }else if(emptySide()!=-1){//Empty side: The player plays in a middle square on any of the four sides.
       board[emptySide()]=-1;
     }else{
-     makeguess(1);
+     makeguess(1);//if somehow it didn't decide to do one of the prevous then randomly choose a place to place
     }
   }
 }
 
-void botGo(){
+void botGo(){//the bot decides how to proceed based on the difficulty
   double randMode = Math.random()*100000%100;
-  if(difficulty==0){
+  if(difficulty==0){//100% change of rendomly picking a tile
    makeguess(1); 
   }
-  if(difficulty==1){
+  if(difficulty==1){//75% chance of randomly picking a tile 25% chance of smart decision
     if(randMode>75){
       makeguess(2); 
     }else{
       makeguess(1); 
     }
   }
-  if(difficulty==2){
+  if(difficulty==2){//50 - 50
     if(randMode>50){
       makeguess(2); 
     }else{
       makeguess(1); 
     }
   }
-  if(difficulty==3){
+  if(difficulty==3){//25% chance random 75% change of smartness
     if(randMode>25){
       makeguess(2); 
     }else{
       makeguess(1); 
     }
   }
-  if(difficulty==4){
+  if(difficulty==4){//100% wont loose(if it goes first)
     makeguess(2); 
   }
 }
